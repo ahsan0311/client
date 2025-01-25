@@ -23,6 +23,7 @@ const Register = () => {
       formData.append("name", data.name);
       formData.append("email", data.email);
       formData.append("password", data.password);
+      formData.append("password", data.cnic);
     
       try {
         const response = await axios.post(
@@ -77,6 +78,14 @@ const Register = () => {
 
         <input
           className="input input-bordered w-full mb-3"
+          {...register("cnic", { required: "cnic is required" })}
+          type="cnic"
+          placeholder="cnic"
+        />
+        {errors.email && <p className="text-red-500 mb-2 text-start mx-1">{errors.cnic.message}</p>}
+
+        <input
+          className="input input-bordered w-full mb-3"
           {...register("password", { required: "Password is required" })}
           type="password"
           placeholder="Password"
@@ -85,7 +94,7 @@ const Register = () => {
 
         
 
-        <button className="btn bg-info hover:bg-info w-full text-lg text-white" type="submit">
+        <button className="btn bg-green-500 w-full text-lg text-white" type="submit">
           Submit
         </button>
       </form>
