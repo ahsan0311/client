@@ -14,38 +14,7 @@ const Register = () => {
         formState: { errors },
       } = useForm()
   
-    // const submissions = async (data) => {
-    
-    //     const formData = new FormData();
-    //     formData.append("name", data.name);
-    //     formData.append("email", data.email);
-    //     formData.append("password",  data.password);
-    //     formData.append("profileImage",  data.imageUrl[0]); 
-
-    //     try {
-    //       const response = await axios.post(
-    //         "https://boiler-plate-mu.vercel.app/api/user/register",
-    //         formData,
-    //         {
-    //           headers: {
-    //             "Content-Type": "multipart/form-data",
-    //           },
-    //         }
-    //       );
-          
-    //       console.log("User registered successfully:", response.data);
-    //       // const userId = response.data.data._id; 
-    //       // const image = response.data.data.imageUrl; 
-    //       // localStorage.setItem("userId",userId)
-    //       // localStorage.setItem("profileImage",imageUrl)
-    //       // console.log("User id:", response.data.data._id);
-    //       // console.log("User image", response.data.data.image);
-    //       // navigate("/login")
-    //     } catch (error) {
-    //       console.error("Error registering user:", error.response?.data || error.message);
-    //     }
-    //   };
-
+   
     const submissions = async (data) => {
       const formData = new FormData();
       formData.append("name", data.name);
@@ -54,7 +23,7 @@ const Register = () => {
     
       try {
         const response = await axios.post(
-          "https://server-beta-ebon.vercel.app/api/user/register",
+          "https://server-beta-ebon.vercel.app//api/user/register",
           formData,
           {
             headers: {

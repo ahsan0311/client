@@ -1,12 +1,20 @@
-import React from 'react'
-import SignUpForm from './auth/Signup/Signup'
+import { Outlet } from "react-router-dom";
+import Navbar from "./components/Navbar";
+
+
+
 
 const App = () => {
-  return (
-    <div>
-      <SignUpForm/>
-    </div>
-  )
-}
 
-export default App
+  return (
+    <>
+    <Navbar/>
+    <Outlet/>
+
+  
+    
+    </>
+  );
+};
+
+export default App;
