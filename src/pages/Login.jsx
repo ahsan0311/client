@@ -17,7 +17,7 @@ const Login = () => {
   const login = async (data) => {
     try {
       setLoading(true);
-      const response = await axios.post("https://server-beta-ebon.vercel.app/api/user/login", data, { withCredentials: true });
+      const response = await axios.post("https://server-beta-ebon.vercel.app/api/login", data, { withCredentials: true });
 
       reset();
 

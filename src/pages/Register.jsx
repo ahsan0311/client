@@ -26,7 +26,7 @@ const Register = () => {
     
       try {
         const response = await axios.post(
-          "https://server-beta-ebon.vercel.app/api/user/register",
+          "https://server-beta-ebon.vercel.app/api/register",
           formData,
           {
             headers: {
