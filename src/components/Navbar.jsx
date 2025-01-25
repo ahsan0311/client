@@ -37,7 +37,7 @@ const Navbar = () => {
   return (
     <div className="navbar px-5 bg-info">
       <div className="flex-1">
-        <a className="text-xl text-white">Blogging App</a>
+        <a className="text-xl text-white">Saylani Microfinance</a>
       </div>
 
       <div className="flex justify-center flex-1"></div>
@@ -46,7 +46,7 @@ const Navbar = () => {
         <div className="dropdown dropdown-end">
           <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
             <div className="w-10 rounded-full">
-              <img src={imageUrl} alt="" className="w-10 h-10 rounded-full" />
+              <img src={imageUrl} alt="User Avatar" className="w-10 h-10 rounded-full" />
             </div>
           </div>
 
