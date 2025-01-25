@@ -8,6 +8,7 @@ const App = () => {
 
   return (
     <>
+    
     <Navbar/>
     <Outlet/>
 
@@ -18,3 +19,8 @@ const App = () => {
 };
 
 export default App;
+
+
+
+
+
