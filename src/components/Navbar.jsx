@@ -35,9 +35,9 @@ const Navbar = () => {
   }, []);
 
   return (
-    <div className="navbar px-5 bg-info">
+    <div className="navbar px-5 bg-green-500">
       <div className="flex-1">
-        <a className="text-xl text-white">Saylani Microfinance</a>
+        <a className="text-3xl font-bold text-white">Saylani Microfinance</a>
       </div>
 
       <div className="flex justify-center flex-1"></div>

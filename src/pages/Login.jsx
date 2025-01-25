@@ -67,7 +67,7 @@ const Login = () => {
             Loading...
           </button>
         ) : (
-          <button className="btn bg-info hover:bg-info w-full text-lg text-white" type="submit">
+          <button className="btn bg-green-500 w-full text-lg text-white" type="submit">
             Login
           </button>
         )}
