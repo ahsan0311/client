@@ -23,7 +23,7 @@ const Home = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("https://boiler-plate-mu.vercel.app/api/loan/loan", {
+      const response = await axios.post("https://server-beta-ebon.vercel.app/api/loan", {
         loanType,
         subcategory,
         amount,
@@ -40,6 +40,7 @@ const Home = () => {
 
   return (
     <div className="p-6 max-w-lg mx-auto">
+      <h1 className="text-4xl font-bold mb-10 " style={{textAlign: "center"}}>Welcome To Saylani Microfinance</h1>
       <h1 className="text-2xl font-bold mb-4">Apply for a Loan</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
@@ -108,9 +109,9 @@ const Home = () => {
 
         <button
           type="submit"
-          className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
+          className="w-full bg-green-500 text-white py-2 rounded hover:bg-blue-600"
         >
-          Submit Loan Application
+          Proceed Loan Application
         </button>
       </form>
     </div>
