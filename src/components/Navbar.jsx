@@ -37,7 +37,7 @@ const Navbar = () => {
   return (
     <div className="navbar px-5 bg-info">
       <div className="flex-1">
-        <a className="text-xl text-white">Saylani Microfinance</a>
+        <a className="text-xl text-white">Blogging App</a>
       </div>
 
       <div className="flex justify-center flex-1"></div>

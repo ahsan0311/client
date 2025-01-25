@@ -1,67 +1,122 @@
+
+
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
-  const [blogs, setBlogs] = useState([]);
+  const loanOptions = {
+    "Wedding Loan": ["Valima", "Furniture", "Valima Food", "Jahez"],
+    "Home Construction Loan": ["Structure", "Finishing"],
+    "Business Startup Loan": ["Buy Stall", "Advance Rent for Shop", "Shop Assets", "Shop Machinery"],
+    "Education Loan": ["University Fees", "Child Fees Loan"],
+  };
+  const navigate = useNavigate()
 
-  const allBlogs = async () => {
+  const [loanType, setLoanType] = useState("");
+  const [subcategory, setSubcategory] = useState("");
+  const [amount, setAmount] = useState("");
+  const [duration, setDuration] = useState("");
+
+  
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
     try {
-      const response = await axios.get("http://localhost:3000/api/blogs/allBlogs");
-      console.log(response.data.data);
-      setBlogs(response.data.data);
+      const response = await axios.post("https://boiler-plate-mu.vercel.app/api/loan/loan", {
+        loanType,
+        subcategory,
+        amount,
+        duration,
+      });
+      console.log(response);
+      alert("Loan application submitted successfully!");
+      navigate("/Register")
+
     } catch (error) {
-      console.error(error);
-      setBlogs([]);
+      console.error("Error applying for loan:", error);
     }
   };
 
-  useEffect(() => {
-    allBlogs();
-  }, []);
-
   return (
-    <>
-      <div className="container mx-auto p-4">
-        <h1 className="text-3xl font-bold mb-4">All Blogs</h1>
-        {blogs.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {blogs.map((blog) => (
-              <div key={blog._id} className="card w-full bg-base-100 shadow-xl" style={{ minHeight: '250px' }}>
-                <div className="card-body" style={{ padding: '16px' }}>
-                  {blog.author.image && (
-                    <img
-                      src={blog.author.image} 
-                      alt="User Profile"
-                      style={{
-                        width: '50px',
-                        height: '50px',
-                        borderRadius: '50%',
-                        objectFit: 'cover',
-                      }}
-                    />
-                  )}
-                  <h2 className="card-title">{blog.title}</h2>
-                  <div
-                    style={{
-                      maxHeight: '100px',
-                      overflowY: 'auto',
-                      overflowX: 'hidden',
-                      display: 'block',
-                      paddingRight: '5px',
-                    }}
-                  >
-                    {blog.description}
-                  </div>
-                </div>
-              </div>
+    <div className="p-6 max-w-lg mx-auto">
+      <h1 className="text-2xl font-bold mb-4">Apply for a Loan</h1>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label className="block mb-1 font-medium">Loan Type</label>
+          <select
+            value={loanType}
+            onChange={(e) => {
+              setLoanType(e.target.value);
+              setSubcategory(""); 
+            }}
+            className="w-full border p-2 rounded"
+            required
+          >
+            <option value="" disabled>Select Loan Type</option>
+            {Object.keys(loanOptions).map((type) => (
+              <option key={type} value={type}>
+                {type}
+              </option>
             ))}
+          </select>
+        </div>
+
+        {loanType && (
+          <div>
+            <label className="block mb-1 font-medium">Subcategory</label>
+            <select
+              value={subcategory}
+              onChange={(e) => setSubcategory(e.target.value)}
+              className="w-full border p-2 rounded"
+              required
+            >
+              <option value="" disabled>Select Subcategory</option>
+              {loanOptions[loanType].map((sub) => (
+                <option key={sub} value={sub}>
+                  {sub}
+                </option>
+              ))}
+            </select>
           </div>
-        ) : (
-          <p>No blogs available.</p>
         )}
-      </div>
-    </>
+
+        <div>
+          <label className="block mb-1 font-medium">Amount (PKR)</label>
+          <input
+            type="number"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+            className="w-full border p-2 rounded"
+            placeholder="Enter loan amount"
+            required
+          />
+        </div>
+
+
+        <div>
+          <label className="block mb-1 font-medium">Duration (Years)</label>
+          <input
+            type="number"
+            value={duration}
+            onChange={(e) => setDuration(e.target.value)}
+            className="w-full border p-2 rounded"
+            placeholder="Enter duration in years"
+            required
+          />
+        </div>
+
+        <button
+          type="submit"
+          className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
+        >
+          Submit Loan Application
+        </button>
+      </form>
+    </div>
   );
 };
 
 export default Home;
+
+
