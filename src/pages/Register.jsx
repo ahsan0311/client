@@ -76,12 +76,24 @@ const Register = () => {
         {errors.email && <p className="text-red-500 mb-2 text-start mx-1">{errors.email.message}</p>}
 
         <input
-          className="input input-bordered w-full mb-3"
-          {...register("cnic", { required: "cnic is required" })}
-          type="cnic"
-          placeholder="cnic"
-        />
-        {errors.email && <p className="text-red-500 mb-2 text-start mx-1">{errors.cnic.message}</p>}
+  className="input input-bordered w-full mb-3"
+  {...register("cnic", {
+    required: "CNIC is required",
+    maxLength: {
+      value: 13,
+      message: "CNIC cannot exceed 13 digits",
+    },
+  })}
+  type="text"
+  placeholder="CNIC"
+  maxLength="13" 
+/>
+{errors.cnic && (
+  <p className="text-red-500 mb-2 text-start mx-1">
+    {errors.cnic.message}
+  </p>
+)}
+
 
        
         
