@@ -1,261 +1,148 @@
-import { useEffect, useState } from "react"
-import { useForm } from "react-hook-form"
-import '../pages/Dashboard.css'
-import axios from "axios"
-
+import { useForm } from "react-hook-form";
+import "../pages/Dashboard.css";
+import axios from "axios";
 
 const Dashboard = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm();
 
-   const [loading,setLoading] = useState(false)
-   const [singleUser,setSingleUser] = useState([])
-   const [loadingBlogs, setLoadingBlogs] = useState(true);
-   const [image,setImage] = useState(false)
+  const onSubmit = async (data) => {
+    try {
+      alert("Form Submitted:", data);
+      
+      // Make POST request to your API
+      const response = await axios.post("https://server-beta-ebon.vercel.app/api/addApprove", data);
 
-      const {
-          register,
-          handleSubmit,
-          reset,
-          formState: { errors },
-        } = useForm()
-        
-        // get single user blog
+      if (response.status === 200) {
+        alert("Form Submitted Successfully!");
+        reset(); // Reset the form fields after submission
+      } else {
+        alert("Something went wrong. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error submitting the form:", error.response?.data || error.message);
+      console.log("Failed to submit the form.");
+    }
+  };
 
-        const singleUserBlog = async () => {
-          const userId = localStorage.getItem("userId");
-          const imageUrl = localStorage.getItem("imageUrl")
-          setImage(imageUrl)
-          
-          
-          if (!userId) {
-            console.error("User ID not found in localStorage");
-            return;
-          }
-          try {
-            const response = await axios.get(`http://localhost:3000/api/blogs/singleBlog/${userId}`);
-            setSingleUser(response.data.data);
-            setLoadingBlogs(false);
-          } catch (error) {
-            console.log(error);
-            setLoadingBlogs(false); // Stop loading if there's an error
-          }
-        };
-        useEffect(() => {
-          singleUserBlog();
-        }, []);
-
-
-        // user post blog
-        const postBlog = async (data) => {
-          
-          setLoading(true)
-          const userId = localStorage.getItem("userId"); 
-          if (!userId) {
-            alert("You must be logged in to post a blog.");
-            return;
-          }
-          try {
-            const response = await axios.post(
-              "http://localhost:3000/api/blogs/createBlog",
-              {
-                title: data.title,
-                description: data.description,
-                userId: userId 
-              }
-            );
-
-            console.log("Blog created successfully:", response.data);
-            singleUserBlog()
-            
-            reset()
-            
-          } catch (error) {
-            console.error("Error creating blog:", error.response?.data || error.message);
-          }finally{
-            setLoading(false)
-          }
-        };
-
-        //user delete blog
-        const deleteBlog = async(_id)=>{
-          console.log("blog ID",_id);
-
-          const response = await axios.delete(`http://localhost:3000/api/blogs/deleteBlog/${_id}`)
-          console.log(response);
-          singleUserBlog()
-          
-          
-        }
-
-        //user update blog
-        const editBlog = async (_id)=>{
-          console.log("blog ID",_id);
-          const titleupdate = prompt("Update blog title")
-          const descriptionupdate = prompt("Update blog description")
-
-          if(titleupdate == null || titleupdate.trim() === "" || descriptionupdate == null || descriptionupdate.trim() === ""  ){
-            alert("Title and Description ar can't be empty")
-            return
-          }
-
-          
-          const response = await axios.put(`http://localhost:3000/api/blogs/editBlog/${_id}`,
-            {
-              title: titleupdate,
-              description: descriptionupdate,
-            }
-            
-          )
-          console.log(response);
-          singleUserBlog()
-        }
-        
   return (
     <>
-  
-   {/* dashboard */}
-  <h3 className="m-5 mx-10 text-4xl font-bold">DashBoard</h3>
-  <div className="dashboard-main">
-  <form onSubmit={handleSubmit(postBlog)} className="dashboard-form">
-    
-      <input
-        {...register("title", {
-          required: "This field is required"
-        })}
-        className="dashboard-input"
-        type="text"
-        placeholder="Enter Title.."
-      />
-      {errors.title && <p style={{ color: 'red' }}>{errors.title.message}</p>}
-      
-      <br />
-      <textarea
-        {...register("description", {
-          required: "This field is required"
-        })}
-        className="dashboard-textarea"
-        placeholder="Enter Description.."
-        rows="5"
-        cols="180"
-      />
-      {errors.description && <p style={{ color: 'red' }}>{errors.description.message}</p>}
+      <h3 className="m-5 mx-10 text-4xl font-bold">Loan Request Submission</h3>
 
-        {
-           loading ? <button className="btn btn-info w-full text-lg text-white"><span className="loading loading-dots loading-lg text-center"></span></button> : <button className="btn btn-info w-full text-lg text-white">Publish</button>
-        }
-    </form>
-  </div>
+      <form onSubmit={handleSubmit(onSubmit)} className="dashboard-form">
 
-  {/* my blogs section  */}
-   <h3 className="m-5 mx-10 text-4xl font-bold">My Blogs</h3>
-  <div className="my-blogs-render mb-4">
-   {
-    singleUser ? singleUser.map((blog) => (
-      
-      <div key={blog._id} className="under-rendering ">
-       <div className='flex justify-between flex-wrap h-auto'>
-       <div  className="under-title flex">
-        {
-          image && (
-            <img
-  style={{
-    width: '50px',
-    height: '50px', 
-    borderRadius: '50%', 
-    objectFit: 'cover' 
-  }}
-  alt="User Avatar"
-  src={image} />
-          )
-        }
-          <h3 className='px-5'>{blog.title}</h3>
-        </div>
-       </div>
-        <div>
-          
-        </div>
-        <div className="under-p">
-          <p className="under">{blog.description}</p>
-        </div>
-        <div className='flex gap-5 mt-5 flex-wrap'>
-          <button onClick={()=>deleteBlog(blog._id)} className='btn hover:bg-red-500'>Delete</button>
-          <button onClick={()=>editBlog(blog._id)} className='btn hover:bg-emerald-500'>Edit</button>
-        </div>
-      </div>
-    )): <h1>no data found</h1>
-  } 
-  </div> 
+        {/* Guarantor 1 Information */}
+        <h4 className="text-2xl font-semibold mt-6 mb-3">Guarantor 1 Information</h4>
 
- </>
-  )
-}
+        <input
+          {...register("guarantor1_name", { required: "Name is required" })}
+          className="dashboard-input"
+          type="text"
+          placeholder="Enter Guarantor 1 Name"
+        />
+        {errors.guarantor1_name && <p style={{ color: "red" }}>{errors.guarantor1_name.message}</p>}
 
-export default Dashboard
+        <input
+          {...register("guarantor1_email", {
+            required: "Email is required",
+            pattern: {
+              value: /^[^@\s]+@[^@\s]+\.[^@\s]+$/,
+              message: "Enter a valid email",
+            },
+          })}
+          className="dashboard-input"
+          type="email"
+          placeholder="Enter Guarantor 1 Email"
+        />
+        {errors.guarantor1_email && <p style={{ color: "red" }}>{errors.guarantor1_email.message}</p>}
 
+        <input
+          {...register("guarantor1_location", { required: "Location is required" })}
+          className="dashboard-input"
+          type="text"
+          placeholder="Enter Guarantor 1 Location"
+        />
+        {errors.guarantor1_location && <p style={{ color: "red" }}>{errors.guarantor1_location.message}</p>}
 
- 
+        <input
+          {...register("guarantor1_cnic", {
+            required: "CNIC is required",
+            maxLength: {
+              value: 13,
+              message: "CNIC must be 13 digits long",
+            },
+            minLength: {
+              value: 13,
+              message: "CNIC must be 13 digits long",
+            },
+          })}
+          className="dashboard-input"
+          type="text"
+          placeholder="Enter Guarantor 1 CNIC"
+        />
+        {errors.guarantor1_cnic && <p style={{ color: "red" }}>{errors.guarantor1_cnic.message}</p>}
 
+        {/* Guarantor 2 Information */}
+        <h4 className="text-2xl font-semibold mt-6 mb-3">Guarantor 2 Information</h4>
 
+        <input
+          {...register("guarantor2_name", { required: "Name is required" })}
+          className="dashboard-input"
+          type="text"
+          placeholder="Enter Guarantor 2 Name"
+        />
+        {errors.guarantor2_name && <p style={{ color: "red" }}>{errors.guarantor2_name.message}</p>}
 
-  {/* Success Modal */}
-  {/* {openModal && (
-  <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-    <div className="bg-white p-8 rounded-lg shadow-xl max-w-md w-full mx-4 sm:mx-auto border border-gray-300">
-      <h2 className="text-lg font-bold text-center text-green-600 mb-4">
-        Success!
-      </h2>
-      <p className="text-center text-gray-800 mb-4 font-semibold">{deleteModal}</p>
-      <div className="flex justify-between">
-        <button
-          onClick={closeModal}
-          className="btn btn-gray bg-gray-300 text-white px-4 py-2 rounded-lg transition duration-200 ease-in-out transform hover:bg-gray-300 hover:scale-105"
-        >
-          Cancel
+        <input
+          {...register("guarantor2_email", {
+            required: "Email is required",
+            pattern: {
+              value: /^[^@\s]+@[^@\s]+\.[^@\s]+$/,
+              message: "Enter a valid email",
+            },
+          })}
+          className="dashboard-input"
+          type="email"
+          placeholder="Enter Guarantor 2 Email"
+        />
+        {errors.guarantor2_email && <p style={{ color: "red" }}>{errors.guarantor2_email.message}</p>}
+
+        <input
+          {...register("guarantor2_location", { required: "Location is required" })}
+          className="dashboard-input"
+          type="text"
+          placeholder="Enter Guarantor 2 Location"
+        />
+        {errors.guarantor2_location && <p style={{ color: "red" }}>{errors.guarantor2_location.message}</p>}
+
+        <input
+          {...register("guarantor2_cnic", {
+            required: "CNIC is required",
+            maxLength: {
+              value: 13,
+              message: "CNIC must be 13 digits long",
+            },
+            minLength: {
+              value: 13,
+              message: "CNIC must be 13 digits long",
+            },
+          })}
+          className="dashboard-input"
+          type="text"
+          placeholder="Enter Guarantor 2 CNIC"
+        />
+        {errors.guarantor2_cnic && <p style={{ color: "red" }}>{errors.guarantor2_cnic.message}</p>}
+
+        <button type="submit" className="btn btn-green-500 w-full text-lg text-white mt-6">
+          Submit
         </button>
-        <button
-          onClick={confirmDelete}
-          className="btn btn-error text-white px-4 py-2 rounded-lg transition duration-200 ease-in-out transform bg-red-600 hover:bg-red-700 hover:scale-105"
-        >
-          Delete
-        </button>
-      </div>
-    </div>
-  </div>
-)} */}
+      </form>
+    </>
+  );
+};
 
-
-
-  {/* Edit Modal */}
-  {/* {openEditModal && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-          <div className="bg-white p-8 rounded-lg shadow-xl max-w-md w-full mx-4 sm:mx-auto border border-gray-300">
-            <h2 className="text-lg font-bold mb-4">Edit Blog</h2>
-            <input
-              type="text"
-              value={editData.title}
-              onChange={(e) => setEditData({ ...editData, title: e.target.value })}
-              placeholder="Updated title"
-              className="input input-bordered text-base w-full mb-4"
-            />
-            <textarea
-              value={editData.description}
-              onChange={(e) => setEditData({ ...editData, description: e.target.value })}
-              placeholder="Updated description"
-              className="textarea textarea-bordered text-base w-full mb-4"
-            ></textarea>
-            <div className="flex justify-between">
-              <button
-                onClick={updateBlogs}
-                className="btn btn-primary text-white px-4 py-2 rounded-lg"
-              >
-                Update
-              </button>
-              <button
-                onClick={closeModal}
-                className="btn btn-gray bg-gray-400 text-white px-4 py-2 rounded-lg"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      )} */}
+export default Dashboard;
