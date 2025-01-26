@@ -41,8 +41,14 @@ const Dashboard = () => {
     }
   };
 
+  const logout = ()=>{
+    localStorage.removeItem("accessToken");
+    navigate("/login");
+  }
+
   return (
     <>
+    <button onClick={logout} className="btn bg-green-500 w-full text-lg text-white mt-6 " style={{float :"right"}}>Logout</button>
       <h3 className="m-5 mx-10 text-4xl font-bold">Loan Request Submission</h3>
 
       <form onSubmit={handleSubmit(onSubmit)} className="dashboard-form">
