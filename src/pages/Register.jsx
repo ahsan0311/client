@@ -76,11 +76,11 @@ const Register = () => {
 
         <input
           className="input input-bordered w-full mb-3"
-          {...register("password", { required: "Password is required" })}
-          type="password"
-          placeholder="Password"
+          {...register("cnic", { required: "cnic is required" })}
+          type="cnic"
+          placeholder="cnic"
         />
-        {errors.password && <p className="text-red-500 text-start mx-1 mb-2">{errors.password.message}</p>}
+        {errors.cnic && <p className="text-red-500 text-start mx-1 mb-2">{errors.cnic.message}</p>}
 
        
 
