@@ -9,6 +9,7 @@ import Logout from "./pages/Logout.jsx";
 import Home from "./pages/Home.jsx";
 import { store } from "../Redux/store/store.js";
 import { Provider } from "react-redux";
+import WaitingApproval from "./pages/waiting.jsx";
 
 const router = createBrowserRouter([
   {
@@ -16,7 +17,7 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       {
-        path: "/", // Default route for Home
+        path: "/", 
         element: <Home />,
       },
       {
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
       {
         path: "/Logout",
         element: <Logout />,
+      },
+      {
+        path: "/waiting",
+        element: <WaitingApproval />,
       },
     ],
   },

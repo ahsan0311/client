@@ -22,10 +22,8 @@ const Login = () => {
       if (response.data && response.data.accessToken) {
         const { accessToken, user } = response.data;
 
-        // Store accessToken and userId using Redux
         dispatch(setUser({ userId: user.id, accessToken }));
 
-        // Store in localStorage
         localStorage.setItem("accessToken", accessToken);
         localStorage.setItem("userId", user.id);
 

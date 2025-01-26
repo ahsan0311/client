@@ -2,17 +2,18 @@
 
 import axios from "axios";
 import {useForm} from "react-hook-form";
-// import {useNavigate} from "react-router-dom"
+import {useNavigate} from "react-router-dom"
 
 
 const Register = () => {
 
-  // const navigate = useNavigate()
+  const navigate = useNavigate()
 
   
     const {
         register,
         handleSubmit,
+        reset, 
         formState: { errors },
       } = useForm()
   
@@ -34,6 +35,7 @@ const Register = () => {
           }
         );
         console.log("User registered successfully:", response.data);
+        reset(); 
       } catch (error) {
         console.error("Error registering user:", error);
         if (error.response) {
@@ -46,6 +48,10 @@ const Register = () => {
       }
     };
 
+    setTimeout(() => {
+      alert("Registered Successfully");
+      navigate("/Login");
+    }, 1000);
 
 
     

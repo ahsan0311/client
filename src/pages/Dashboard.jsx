@@ -1,8 +1,10 @@
 import { useForm } from "react-hook-form";
 import "../pages/Dashboard.css";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
+  const navigate = useNavigate()
   const {
     register,
     handleSubmit,
@@ -14,12 +16,22 @@ const Dashboard = () => {
     try {
       alert("Form Submitted:", data);
       
-      // Make POST request to your API
       const response = await axios.post("https://server-beta-ebon.vercel.app/api/addApprove", data);
 
       if (response.status === 200) {
         alert("Form Submitted Successfully!");
-        reset(); // Reset the form fields after submission
+        reset(); 
+        navigate('/waiting') 
+
+
+        setTimeout(() => {
+          navigate("/Login");
+        }, 3000);
+
+
+
+
+
       } else {
         alert("Something went wrong. Please try again.");
       }
@@ -35,7 +47,6 @@ const Dashboard = () => {
 
       <form onSubmit={handleSubmit(onSubmit)} className="dashboard-form">
 
-        {/* Guarantor 1 Information */}
         <h4 className="text-2xl font-semibold mt-6 mb-3">Guarantor 1 Information</h4>
 
         <input
@@ -86,7 +97,6 @@ const Dashboard = () => {
         />
         {errors.guarantor1_cnic && <p style={{ color: "red" }}>{errors.guarantor1_cnic.message}</p>}
 
-        {/* Guarantor 2 Information */}
         <h4 className="text-2xl font-semibold mt-6 mb-3">Guarantor 2 Information</h4>
 
         <input
@@ -137,7 +147,7 @@ const Dashboard = () => {
         />
         {errors.guarantor2_cnic && <p style={{ color: "red" }}>{errors.guarantor2_cnic.message}</p>}
 
-        <button type="submit" className="btn btn-green-500 w-full text-lg text-white mt-6">
+        <button type="submit" className="btn bg-green-500 w-full text-lg text-white mt-6">
           Submit
         </button>
       </form>
