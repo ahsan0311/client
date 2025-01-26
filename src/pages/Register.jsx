@@ -16,13 +16,12 @@ const Register = () => {
         formState: { errors },
       } = useForm()
   
-  
-
+ 
     const submissions = async (data) => {
       const formData = new FormData();
       formData.append("name", data.name);
       formData.append("email", data.email);
-      formData.append("password", data.cnic);
+      formData.append("cnic", data.cnic);
     
       try {
         const response = await axios.post(
@@ -76,27 +75,14 @@ const Register = () => {
         {errors.email && <p className="text-red-500 mb-2 text-start mx-1">{errors.email.message}</p>}
 
         <input
-  className="input input-bordered w-full mb-3"
-  {...register("cnic", {
-    required: "CNIC is required",
-    maxLength: {
-      value: 13,
-      message: "CNIC cannot exceed 13 digits",
-    },
-  })}
-  type="text"
-  placeholder="CNIC"
-  maxLength="13" 
-/>
-{errors.cnic && (
-  <p className="text-red-500 mb-2 text-start mx-1">
-    {errors.cnic.message}
-  </p>
-)}
-
+          className="input input-bordered w-full mb-3"
+          {...register("password", { required: "Password is required" })}
+          type="password"
+          placeholder="Password"
+        />
+        {errors.password && <p className="text-red-500 text-start mx-1 mb-2">{errors.password.message}</p>}
 
        
-        
 
         <button className="btn bg-green-500 w-full text-lg text-white" type="submit">
           Submit

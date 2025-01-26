@@ -37,16 +37,16 @@ const Navbar = () => {
   return (
     <div className="navbar px-5 bg-green-500">
       <div className="flex-1">
-        <a className="text-3xl font-bold text-white">Saylani Microfinance</a>
+        <a className="text-xl text-white">MicroFinance</a>
       </div>
 
       <div className="flex justify-center flex-1"></div>
 
       <div className="flex-none gap-2">
         <div className="dropdown dropdown-end">
-          <div tabIndex={0} role="button" className="btn bg-green-500">
-            <div style={{marginRight : "20px"}}>
-             <h2  style={{color:"white" , fontSize : "22px"}}>Menu</h2>
+          <div tabIndex={0} role="button" className="btn">
+            <div className="w-10 rounded-full">
+              <h2>Menu</h2>
             </div>
           </div>
 
@@ -61,9 +61,7 @@ const Navbar = () => {
                 <li>
                   <Link to="Login">Login</Link>
                 </li>
-                {/* <li>
-                  <Link to="Register">Register</Link>
-                </li> */}
+               
               </>
             ) : (
               <>

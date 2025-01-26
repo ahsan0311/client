@@ -40,7 +40,6 @@ const Home = () => {
 
   return (
     <div className="p-6 max-w-lg mx-auto">
-      <h1 className="text-4xl font-bold mb-10 " style={{textAlign: "center"}}>Welcome To Saylani Microfinance</h1>
       <h1 className="text-2xl font-bold mb-4">Apply for a Loan</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
